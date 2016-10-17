@@ -18,6 +18,8 @@ from goodies import RandomGoody
 from baddies import RandomBaddy
 from gui import GameViewer
 
+from goodies_ed import EdGoody
+
 
 EXAMPLE_MAZE = Maze(10, 10, "0001010000"
                             "0111010101"
@@ -33,8 +35,8 @@ EXAMPLE_MAZE = Maze(10, 10, "0001010000"
 def text_example():
     ''' Prints the state of the game to stdout after each round of turns '''
 
-    goody0 = RandomGoody()
-    goody1 = RandomGoody()
+    goody0 = EdGoody()
+    goody1 = EdGoody()
     baddy = RandomBaddy()
 
     game = Game(EXAMPLE_MAZE * (2, 2), goody0, goody1, baddy)
@@ -64,11 +66,11 @@ def gui_example():
     app = QApplication.instance() or QApplication(sys.argv)
     gv = GameViewer()
     gv.show()
-    gv.set_game_generator(game_repeater(EXAMPLE_MAZE * (3, 3), RandomGoody, RandomGoody, RandomBaddy))
+    gv.set_game_generator(game_repeater(EXAMPLE_MAZE * (3, 3), EdGoody, EdGoody, RandomBaddy))
     app.exec_()
 
 if __name__ == "__main__":
     # Uncomment whichever example you want to run
-    text_example()
+    #text_example()
     #stats_example(1000)
-    #gui_example()
+    gui_example()
