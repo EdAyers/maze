@@ -5,7 +5,7 @@ from maze import Goody, UP, LEFT, DOWN, RIGHT, STAY, PING
 class SimpleGoody(Goody):
 
     def take_turn(self, _obstruction, _ping_response):
-        if _ping_response:
+        if _ping_response != None:
             players = _ping_response.keys()
             baddy = next(player for player in players if isinstance(player, Baddy))
             other_goody = next(player for player in players if isinstance(player, Goody) and player != self)
