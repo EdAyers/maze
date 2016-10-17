@@ -16,9 +16,7 @@ class SimpleGoody(Goody):
         positions = [UP, RIGHT, DOWN, LEFT]
 
         for (k, v) in zip(weights, positions).sort(key = lambda tup: tup[0]):
-            if _obstruction[v]:
-                pass
-            else:
+            if not _obstruction[v]:
                 return v
             
         
