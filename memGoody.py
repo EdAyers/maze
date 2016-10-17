@@ -25,30 +25,44 @@ def neighbors(graph, pos):
     near = [pos + DX, pos - DX, pos + DY, pos - DY]
     return filter((lambda p: not graph[p]),near)
 
-# finds a route between start and finish given a defaultdict(bool)
+# to each node on the grid
+# assign none if its unreachable
+# assign none if the algorithm timed out 
+# assign none if the algorithm hit the finish before the algorithm finished
+# assign a point of l1length 1 to indicate one of the fastest routes from that node to the start node. 
 def breadth_first_search(graph, start, finish):
     frontier = Queue()
     frontier.put(start)
     came_from = {}
     came_from[start] = None
-    
-    while not frontier.empty():
+    ttl = 100 * 100
+    while (not frontier.empty()) and (ttl > 0):
         current = frontier.get()
+        ttl--
         if (current == finish): break
         for next in neighbors(graph, current):
             if next not in came_from:
                 frontier.put(next)
-                came_from[next] = current
-    current = finish
-    route = [] 
-    while not (current == start):
-      current = came_from[current]
-      route.append(current)     
-    return route
+                delta = next - current
+                came_from[next] = delta
+    return came_from
+
 
 class MemGoody(Goody):
-    mymap = defaultdict(bool)
-    pos = (0,0)
+    mymap = defaultdict(bool) # my understanding of the map
+    pos = (0,0) # my current position relative to starting point
+    route = [] # the sequence of up/down/left/right commands that I should follow 
+    target = (0,0) # the point I'm trying to get to
+    
+    # return a point that I should try and get to
+    def get_target():
+        # IMPLEMENT ME!
+        return (10,10)
+
+    # return a list of UP, DOWN etc commands to get to target
+    def get_route():
+        # IMPLEMENT ME!
+        return []
 
     def take_turn(self, obstructions, ping_request):
       
@@ -57,13 +71,15 @@ class MemGoody(Goody):
             if not isFree:
                 self.mymap[self.pos] = true
 
+        
+
         #update route if we pinged
         if ping_request:
             self.target = get_target(self,ping_request)
-            self.route = get_route(self)
+            self.route = get_route()
 
         if not route:
-            self.route = get_route(self)
+            self.route = get_route()
 
         next = self.route.pop()
         if (next == UP): self.pos -= DY
